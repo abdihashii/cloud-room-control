@@ -9,6 +9,10 @@ img
     /*margin-top: 50px;*/
     width: 200px;
 }
+img:hover
+{
+    cursor: pointer;
+}
 img:active
 {
     position: relative;
@@ -21,35 +25,70 @@ img:active
     position: relative;
 
     width: 500px;
-    height: 360px;
+    /*height: 360px; for control h2*/
+    height: 300px;
     margin: 40px auto;
 
     border-radius: 20px ;
     background-color: #00a99d;
 }
 
-	#box
+	#refresh-container
 	{
 	    position: absolute;
 	    z-index: 0;
 	    top: 0;
 	    right: 0;
 
-	    width: 50px;
-	    height: 50px;
+	    width: 200px;
 
+	    border-radius: 0 0 0 20px;
 	    border-top-right-radius: 20px;
-	    background: salmon;
+	    border-bottom-left-radius: 20px;
+	    background: #000;
 	}
 
-	#refresh-icon
-	{
-	    position: absolute;
-	    top: 10px;
-	    right: 10px;
+		.status
+		{
+		    line-height: 50px;
 
-	    width: 30px;
-	}
+		    float: left;
+
+		    margin-left: 35px;
+
+		    text-align: center;
+
+		    color: white;
+		}
+		#connected
+		{
+		    color: green;
+		}
+		#disconnected
+		{
+		    color: red;
+		}
+
+		#refresh-box
+		{
+		    float: right;
+
+		    width: 50px;
+		    height: 50px;
+
+		    border-radius: 0 0 0 0;
+		    /*border-top-right-radius: 20px;*/
+		    background: salmon;
+		}
+
+		#refresh-icon
+		{
+		    position: absolute;
+		    top: 10px;
+		    right: 10px;
+
+		    width: 30px;
+		}
 
 	.cntrl
 	{
