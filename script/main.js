@@ -11,17 +11,18 @@ requestURLLight = baseURL + deviceID + "/" + isOn + "/?access_token=" + accessTo
 
 var flagS = false;
 var flagF = false;
+// var status = true;
 
 
 
 function ajaxCall(URL, status1, status2, name) {
   $.ajax({
     method: "GET",
-    url: requestURLLight,
+    url: URL,
     dataType: "json",
     data: accessToken,
     timeout: 2000, // adjust the time to getJSON
-    success: function () {
+    success: function (data, textStatus, jqXHR) {
       $('.status').css('display','none');
       $('#connected').css('display','inline');
       if (!flagS) {
@@ -29,11 +30,12 @@ function ajaxCall(URL, status1, status2, name) {
         flagS = true;
       }
       flagF = false;
-      status = json.result;
-      if (status === true){ // locked - lightOn
+
+      status = data.result;
+      if (data.result === true){ // locked - lightOn
         status1();
       }
-      else if (status === false){ // unlocked - lightOff
+      else if (data.result === false){ // unlocked - lightOff
         status2();
       }
       console.log(name + ": " + status);
@@ -53,9 +55,9 @@ function ajaxCall(URL, status1, status2, name) {
 
 
 /***** LOCKSTATUS *****/
-ajaxCall(requestURLLock, locked, unlocked, isLocked);
+// ajaxCall(requestURLLock, locked, unlocked, isLocked);
 /***** LIGHTSTATUS *****/
-ajaxCall(requestURLLight, lightOn, lightOff, isOn);
+// ajaxCall(requestURLLight, lightOn, lightOff, isOn);
 
 /***** REFRESH status *****/
 function refresh() {
@@ -93,7 +95,7 @@ function lock() { // function that runs onClick
     // unlocked();
     doorLock("UNLOCK");
   }
-  refresh();
+  // refresh();
 }
 function locked() {
   var img = document.getElementById("lock_pad");
@@ -116,7 +118,7 @@ function light() { // function that runs onClick
     // lightOff();
     lightSwitch("OFF");
   }
-  refresh();
+  // refresh();
 }
 function lightOn() {
   var img = document.getElementById("light_bulb");
@@ -147,5 +149,5 @@ function home(value) {
 
 
 // Continuosly running refresh function, every 10 ms
-// setInterval(refresh, 100);
+setInterval(refresh, 1000);
 
