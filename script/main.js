@@ -20,10 +20,11 @@ function call(URL, status1, status2) {
       flagS = true;
     }
     flagF = false;
-    if (json.result === true){ // locked
+    status = json.result;
+    if (status === true){ // locked
       status1();
     }
-    else if (json.result === false){ // unlocked
+    else if (status === false){ // unlocked
       status2();
     }
   }).fail(function(){
@@ -33,6 +34,7 @@ function call(URL, status1, status2) {
       console.log('Disconnected from Photon!');
       flagF = true;
     }
+    alert('FAIL');
     flagS = false;
   });
 }
@@ -101,7 +103,7 @@ function light() {
     // lightOff();
     lightSwitch("OFF");
   }
-  // refresh();
+  refresh();
 }
 function lightOn() {
   var img = document.getElementById("light_bulb");
@@ -132,5 +134,5 @@ function home(value) {
 
 
 // Continuosly running refresh function, every 10 ms
-setInterval(refresh, 10);
+// setInterval(refresh, 100);
 
