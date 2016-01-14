@@ -11,45 +11,58 @@ requestURLLight = baseURL + deviceID + "/" + isOn + "/?access_token=" + accessTo
 
 var flagS = false;
 var flagF = false;
-function call(URL, status1, status2) {
-  $.getJSON(URL, function(json) {
-    $('.status').css('display','none');
-    $('#connected').css('display','inline');
-    if (!flagS) {
-      console.log('Connected to Photon!');
-      flagS = true;
+
+
+
+function ajaxCall(URL, status1, status2, name) {
+  $.ajax({
+    method: "GET",
+    url: requestURLLight,
+    dataType: "json",
+    data: accessToken,
+    timeout: 2000, // adjust the time to getJSON
+    success: function () {
+      $('.status').css('display','none');
+      $('#connected').css('display','inline');
+      if (!flagS) {
+        console.log('Connected to Photon!');
+        flagS = true;
+      }
+      flagF = false;
+      status = json.result;
+      if (status === true){ // locked - lightOn
+        status1();
+      }
+      else if (status === false){ // unlocked - lightOff
+        status2();
+      }
+      console.log(name + ": " + status);
+    },
+    error: function () {
+      $('.status').css('display','none');
+      $('#disconnected').css('display','inline');
+      if (!flagF) {
+        console.log('Disconnected from Photon!');
+        flagF = true;
+      }
+      flagS = false;
     }
-    flagF = false;
-    status = json.result;
-    if (status === true){ // locked
-      status1();
-    }
-    else if (status === false){ // unlocked
-      status2();
-    }
-  }).fail(function(){
-    $('.status').css('display','none');
-    $('#disconnected').css('display','inline');
-    if (!flagF) {
-      console.log('Disconnected from Photon!');
-      flagF = true;
-    }
-    alert('FAIL');
-    flagS = false;
   });
 }
 
+
+
 /***** LOCKSTATUS *****/
-call(requestURLLock, locked, unlocked);
+ajaxCall(requestURLLock, locked, unlocked, isLocked);
 /***** LIGHTSTATUS *****/
-call(requestURLLight, lightOn, lightOff);
+ajaxCall(requestURLLight, lightOn, lightOff, isOn);
 
 /***** REFRESH status *****/
 function refresh() {
   // LOCK STATUS
-  call(requestURLLock, locked, unlocked);
+  ajaxCall(requestURLLock, locked, unlocked, isLocked);
   // LIGHTSTATUS
-  call(requestURLLight, lightOn, lightOff);  
+  ajaxCall(requestURLLight, lightOn, lightOff, isOn);
 }
 
 
@@ -71,7 +84,7 @@ function lightSwitch(value) {
 
 
 /***** door LOCK *****/
-function lock() {
+function lock() { // function that runs onClick
   var img = document.getElementById("lock_pad");
   if (img.src.match("unlocked")) {
     // locked();
@@ -80,7 +93,7 @@ function lock() {
     // unlocked();
     doorLock("UNLOCK");
   }
-  // refresh();
+  refresh();
 }
 function locked() {
   var img = document.getElementById("lock_pad");
@@ -94,7 +107,7 @@ function unlocked() {
 }
 
 /***** LIGHT switch *****/
-function light() {
+function light() { // function that runs onClick
   var img = document.getElementById("light_bulb");
   if (img.src.match("light_off")) {
     // lightOn();
