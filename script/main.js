@@ -55,12 +55,17 @@ function ajaxCall(URL, status1, status2, name) {
 
 
 /***** LOCKSTATUS *****/
-// ajaxCall(requestURLLock, locked, unlocked, isLocked);
+ajaxCall(requestURLLock, locked, unlocked, isLocked);
 /***** LIGHTSTATUS *****/
-// ajaxCall(requestURLLight, lightOn, lightOff, isOn);
+ajaxCall(requestURLLight, lightOn, lightOff, isOn);
 
 /***** REFRESH status *****/
 function refresh() {
+  // Displaying the 'waiting' text
+  $('.status').css('display','none');
+  $('#waiting').css('display','inline');
+  // waiting animation
+  waiting();
   // LOCK STATUS
   ajaxCall(requestURLLock, locked, unlocked, isLocked);
   // LIGHTSTATUS
@@ -100,12 +105,10 @@ function lock() { // function that runs onClick
 function locked() {
   var img = document.getElementById("lock_pad");
   img.src = "img/locked.svg";
-  // refresh();
 }
 function unlocked() {
   var img = document.getElementById("lock_pad");
   img.src = "img/unlocked_col.svg";
-  // refresh();
 }
 
 /***** LIGHT switch *****/
@@ -123,12 +126,10 @@ function light() { // function that runs onClick
 function lightOn() {
   var img = document.getElementById("light_bulb");
   img.src = "img/light_on_col.svg";
-  // refresh();
 }
 function lightOff() {
   var img = document.getElementById("light_bulb");
   img.src = "img/light_off.svg";
-  // refresh();
 }
 
 
@@ -149,5 +150,5 @@ function home(value) {
 
 
 // Continuosly running refresh function, every 10 ms
-setInterval(refresh, 1000);
+// setInterval(refresh, 1000);
 

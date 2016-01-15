@@ -15,7 +15,7 @@
 			<h2 class="status" id="connected">Connected</h2>
 			<h2 class="status" id="disconnected">Disconnected</h2>
 			<div id="refresh-box">
-				<img id="refresh-icon" src="img/refresh.svg" onclick="refresh()">
+				<img id="refresh-icon" src="img/refresh.svg" onclick="refresh();rotateImg()">
 			</div>
 		</div>
 		<div class="cntrl">
@@ -31,28 +31,23 @@
 	<script src="script/jQueryRotate.js"></script>
 	<script src="script/main.js"></script> 
 	<script>
-		$("#refresh-icon").rotate({ 
-			bind: 
-		    { 
-		    	click: function(){
-		            $(this).rotate({ angle: 0, animateTo:180, duration: 350})
-		        }
-		    } 
-		});
+		function rotateImg() {
+			$("#refresh-icon").rotate({ angle: 0, animateTo:180, duration: 350})
+		}
 
 		$('.status').css('display','none');
 		$('#waiting').css('display','inline');
 
 		var dots = 0;
-		setInterval(waiting, 800);
+		setInterval(waiting, 50);
 		function waiting() {
-		  if (dots < 3) {
-		    $('#dots').append('.');
-		    dots++;
-		  } else {
-		    $('#dots').html('');
-		    dots = 0;
-		  }
+			if (dots < 3) {
+				$('#dots').append('.');
+				dots++;
+			} else {
+				$('#dots').html('');
+				dots = 0;
+			}
 		}
 	</script>
 </body>
