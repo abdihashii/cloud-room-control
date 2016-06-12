@@ -65,7 +65,7 @@ function refresh() {
   $('.status').css('display','none');
   $('#waiting').css('display','inline');
   // waiting animation
-  waiting();
+  // waiting();
   // LOCK STATUS
   ajaxCall(requestURLLock, locked, unlocked, isLocked);
   // LIGHTSTATUS
@@ -100,7 +100,7 @@ function lock() { // function that runs onClick
     // unlocked();
     doorLock("UNLOCK");
   }
-  // refresh();
+  refresh();
 }
 function locked() {
   var img = document.getElementById("lock_pad");
@@ -121,7 +121,7 @@ function light() { // function that runs onClick
     // lightOff();
     lightSwitch("OFF");
   }
-  // refresh();
+  refresh();
 }
 function lightOn() {
   var img = document.getElementById("light_bulb");

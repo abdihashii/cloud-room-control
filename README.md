@@ -1,8 +1,14 @@
 # cloud-door-lock
 
+A control panel that connects to the Particle Photon Microcontroller. Locks/unlocks a servo connected to a door, also controls a relay connected to a light bulb.
+
+Room automation is implemented using IFTTT and a particle function, highlighted in room-automation.ino and the main javascript file.
+
 Design features:
   Name of each icon and its function
   p tag with white background
+
+======== UPDATES ========
 
 1/14/16 (1:00am):
 	Problem with icons not changing when clicked has been fixed!
@@ -22,6 +28,9 @@ Design features:
 	function, the 'waiting' text animation runs alongside the connection status.
 
 	Idea: The only thing I want to refresh 
+
+	Problems: Once icons are pressed, waiting animation runs. I want the waiting animation
+	to run only on press of the refresh icon and initial page load.
 
 	NEED TO DO: 
 		Need to make the 'waiting' animation work whenever the refresh button is pressed.
