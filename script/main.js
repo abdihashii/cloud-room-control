@@ -9,48 +9,67 @@ var baseURL = "https://api.particle.io/v1/devices/";
 requestURLLock = baseURL + deviceID + "/" + isLocked + "/?access_token=" + accessToken;
 requestURLLight = baseURL + deviceID + "/" + isOn + "/?access_token=" + accessToken;
 
+var flagS = false;
+var flagF = false;
+// var status = true;
+
+
+
+function ajaxCall(URL, status1, status2, name) {
+  $.ajax({
+    method: "GET",
+    url: URL,
+    dataType: "json",
+    data: accessToken,
+    timeout: 2000, // adjust the time to getJSON
+    success: function (data, textStatus, jqXHR) {
+      $('.status').css('display','none');
+      $('#connected').css('display','inline');
+      if (!flagS) {
+        console.log('Connected to Photon!');
+        flagS = true;
+      }
+      flagF = false;
+
+      status = data.result;
+      if (data.result === true){ // locked - lightOn
+        status1();
+      }
+      else if (data.result === false){ // unlocked - lightOff
+        status2();
+      }
+      console.log(name + ": " + status);
+    },
+    error: function () {
+      $('.status').css('display','none');
+      $('#disconnected').css('display','inline');
+      if (!flagF) {
+        console.log('Disconnected from Photon!');
+        flagF = true;
+      }
+      flagS = false;
+    }
+  });
+}
+
+
 
 /***** LOCKSTATUS *****/
-$.getJSON(requestURLLock, function(json) {
-  var resultLock;
-  if (json.result === true){ // locked
-    locked();
-  }
-  else if (json.result === false){ // unlocked
-    unlocked();
-  }
-});
+ajaxCall(requestURLLock, locked, unlocked, isLocked);
 /***** LIGHTSTATUS *****/
-$.getJSON(requestURLLight, function(json) {
-  var resultLIGHT;
-  if (json.result === true){ // light on
-    lightOn();
-  }
-  else if (json.result === false){ // light off
-    lightOff();
-  }
-});
+ajaxCall(requestURLLight, lightOn, lightOff, isOn);
 
 /***** REFRESH status *****/
 function refresh() {
+  // Displaying the 'waiting' text
+  $('.status').css('display','none');
+  $('#waiting').css('display','inline');
+  // waiting animation
+  // waiting();
   // LOCK STATUS
-  $.getJSON(requestURLLock, function(json) {
-    if (json.result === true){ // locked
-      locked();
-    }
-    else if (json.result === false){ // unlocked
-      unlocked();
-    }
-  });
+  ajaxCall(requestURLLock, locked, unlocked, isLocked);
   // LIGHTSTATUS
-  $.getJSON(requestURLLight, function(json) {
-    if (json.result === true){ // light on
-      lightOn();
-    }
-    else if (json.result === false){ // light off
-      lightOff();
-    }
-  });
+  ajaxCall(requestURLLight, lightOn, lightOff, isOn);
 }
 
 
@@ -72,7 +91,7 @@ function lightSwitch(value) {
 
 
 /***** door LOCK *****/
-function lock() {
+function lock() { // function that runs onClick
   var img = document.getElementById("lock_pad");
   if (img.src.match("unlocked")) {
     // locked();
@@ -81,21 +100,19 @@ function lock() {
     // unlocked();
     doorLock("UNLOCK");
   }
-  // refresh();
+  refresh();
 }
 function locked() {
   var img = document.getElementById("lock_pad");
   img.src = "img/locked.svg";
-  // refresh();
 }
 function unlocked() {
   var img = document.getElementById("lock_pad");
   img.src = "img/unlocked_col.svg";
-  // refresh();
 }
 
 /***** LIGHT switch *****/
-function light() {
+function light() { // function that runs onClick
   var img = document.getElementById("light_bulb");
   if (img.src.match("light_off")) {
     // lightOn();
@@ -104,17 +121,15 @@ function light() {
     // lightOff();
     lightSwitch("OFF");
   }
-  // refresh();
+  refresh();
 }
 function lightOn() {
   var img = document.getElementById("light_bulb");
   img.src = "img/light_on_col.svg";
-  // refresh();
 }
 function lightOff() {
   var img = document.getElementById("light_bulb");
   img.src = "img/light_off.svg";
-  // refresh();
 }
 
 
@@ -135,29 +150,5 @@ function home(value) {
 
 
 // Continuosly running refresh function, every 10 ms
-setInterval(refresh, 10);
+// setInterval(refresh, 1000);
 
-
-
-// function lightOn() {
-//   var img = document.getElementById("light_bulb");
-//   img.src = "img/light_on.svg";
-//   //lightSwitch("ON");
-//   // refresh();
-// }
-// function lightOff() {
-//   var img = document.getElementById("light_bulb");
-//   img.src = "img/light_off.svg";
-//   //document.getElementById("light").innerHTML = "OFF";
-//   // lightSwitch("OFF");
-//   //document.getElementById("light").style.backgroundColor = "#5c5858";
-//   // refresh();
-// }
-// function changeImage() {
-//   var img = document.getElementById("light");
-//   if (img.src.match("light_off")) {
-//     img.src = "img/light_on.png";
-//   } else {
-//     img.src = "img/light_off.png";
-//   }
-// }
