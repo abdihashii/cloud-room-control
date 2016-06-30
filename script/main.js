@@ -2,8 +2,8 @@
 // Initializing vars for status
 var isLocked = "isLocked";
 var isOn = "isOn";
-var deviceID = "26001c000247343337373738";
-var accessToken = "aa0358abcb3e3ba75775ba6c65a02f9099145d44";
+var deviceID = "youre device ID";
+var accessToken = "your access token";
 var baseURL = "https://api.particle.io/v1/devices/";
 
 requestURLLock = baseURL + deviceID + "/" + isLocked + "/?access_token=" + accessToken;
